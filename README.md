@@ -33,6 +33,8 @@
 - 👁️ **Visibilité** : à partir d'une adresse, les prochains passages de l'ISS (ou d'un autre satellite) visibles à l'œil nu, avec l'heure et la direction où regarder.
 - ☁️ **Météo en direct** : les vrais nuages vus par les satellites météo, la pluie et les orages, et les vents animés, sur les 3 derniers jours (la frise les fait défiler heure par heure).
 - 📍 **Météo d'un lieu** : un clic n'importe où sur la Terre affiche la température, le ciel, le vent et les prochaines heures. Pour une date passée choisie sur la frise, la météo de ce jour-là, jusqu'en 1940.
+- 🚀 **Prochains lancements de fusées** (onglet 🚀) : compte à rebours, pas de tir sur le globe, et retransmission en direct dans le site quand l'opérateur en diffuse une.
+- 🎧 **Écouter** : depuis la fiche d'un avion, la tour de contrôle de son aéroport de départ ou d'arrivée (LiveATC.net) ; depuis la fiche de l'ISS, le direct de la NASA.
 - 🆕 **Nouveaux lancements** ajoutés automatiquement, avec une liste des nouveautés.
 - 🆓 **100 % gratuit et 100 % GitHub** : aucun serveur à louer, aucun ordinateur à laisser allumé.
 
@@ -46,6 +48,7 @@
 CelesTrak ─►│ tâche « Atlas - satellites »  toutes les 3 h     │──► branche atlas-donnees ┤
  EUMETSAT,  │                                                  │                          │
  NASA, NOAA►│ tâche « Atlas - météo »       toutes les heures  │──► branche atlas-meteo ──┤
+ Space Devs►│   (+ prochains lancements)                       │                          │
             └──────────────────────────────────────────────────┘                          │
                                                                                           ▼
                               votre navigateur  ◄──  site damballah.github.io/atlas (GitHub Pages)
@@ -159,10 +162,11 @@ atlas/
 └── outils/
     ├── avions.py         relevé mondial des avions (utilisé par GitHub Actions)
     ├── donnees.py        catalogue et orbites des satellites (utilisé par GitHub Actions)
-    └── meteo.py          cartes des nuages, de la pluie et des vents (utilisé par GitHub Actions)
+    ├── meteo.py          cartes des nuages, de la pluie et des vents (utilisé par GitHub Actions)
+    └── lancements.py     prochains lancements de fusées (utilisé par GitHub Actions)
 .github/workflows/
 ├── atlas-avions.yml      tâche automatique : avions, toutes les 5 min
-├── atlas-meteo.yml       tâche automatique : météo, toutes les heures
+├── atlas-meteo.yml       tâche automatique : météo et lancements, toutes les heures
 └── atlas-satellites.yml  tâche automatique : satellites, toutes les 3 h
 ```
 
@@ -187,6 +191,8 @@ Aucune installation et aucune compilation : le site est en HTML, CSS et JavaScri
 - Vents : modèle [NOAA GFS](https://www.nco.ncep.noaa.gov/pmb/products/gfs/) (vent à 10 m, grille de 1°), donc une prévision à quelques heures et non une mesure.
 - Météo au clic : [Open-Meteo.com](https://open-meteo.com), licence CC BY 4.0. Archives : réanalyse ERA5 de Copernicus / ECMWF.
 - Imagerie détaillée : Sentinel-2 cloudless 2024 – [s2maps.eu](https://s2maps.eu) by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024), licence CC BY-NC-SA 4.0 (usage non commercial). Option : Esri World Imagery (© Esri, Maxar, Earthstar Geographics et la communauté des utilisateurs SIG).
+- Lancements : [The Space Devs – Launch Library 2](https://thespacedevs.com/llapi) (2 appels par heure, faits par GitHub). Retransmissions : chaînes officielles des opérateurs.
+- Radio des avions : liens vers [LiveATC.net](https://www.liveatc.net) (leurs flux ne sont pas intégrés au site, conformément à leurs conditions). Direct de l'ISS : NASA.
 - Moteur 3D : [three.js](https://threejs.org) (MIT). Textures de la Terre : NASA Blue Marble, via [three-globe](https://github.com/vasturiano/three-globe) (MIT).
 - **Avions d'avant aujourd'hui** : il s'agit d'une **simulation** fondée sur des ordres de grandeur historiques, car aucune archive mondiale de tous les vols n'existe. C'est indiqué clairement dans le site.
 
