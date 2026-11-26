@@ -13,15 +13,6 @@
 
 </div>
 
-<!-- GALERIE : déposez vos captures dans docs/images/ avec ces noms (ou changez les noms ci-dessous) -->
-| Avions en temps réel | Satellites et débris | Voyage dans le temps |
-|:---:|:---:|:---:|
-| ![Avions](docs/images/avions.png) | ![Satellites](docs/images/satellites.png) | ![Frise 1900 → aujourd'hui](docs/images/frise.png) |
-| **Nuages, pluie et vents** | **Météo et climat d'un lieu** | **Prochains lancements** |
-| ![Météo](docs/images/meteo.png) | ![Météo au clic](docs/images/meteo-clic.png) | ![Lancements](docs/images/lancements.png) |
-| **Recherche d'un vol** | **Passages au-dessus de chez vous** | **Zoom jusqu'aux villes** |
-| ![Recherche](docs/images/recherche.png) | ![Visibilité](docs/images/visibilite.png) | ![Zoom](docs/images/zoom.png) |
-
 ---
 
 ## ✨ Ce que ça fait
