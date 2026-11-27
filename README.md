@@ -8,11 +8,11 @@
 
 <!-- IMAGE PRINCIPALE : déposez une capture du globe dans docs/images/apercu.png (1600×900 conseillé) -->
 
-![Mises à jour récentes](docs/images/update27112026.png).
+## Mises à jour récentes
+![Mises à jour récentes](docs/images/update27112026.png)
 
+## Aperçu d'Atlas du ciel
 ![Aperçu d'Atlas du Ciel](docs/images/apercu.png)
-
-
 
 *Idée et conception : **[Damballah](https://github.com/damballah)** · Programmation et documentation : **Claude** (Anthropic)*
 
