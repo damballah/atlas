@@ -2,7 +2,7 @@
 
 # 🌍 Atlas du Ciel
 
-**Les avions du monde entier, tous les objets spatiaux depuis 1957 et la météo en direct,<br>sur un globe 3D dans votre navigateur, de 1900 à aujourd'hui.**
+**Les avions et les navires du monde entier, tous les objets spatiaux depuis 1957 et la météo en direct,<br>sur un globe 3D dans votre navigateur, de 1900 à aujourd'hui.**
 
 [**▶ Voir le site en ligne**](https://damballah.github.io/atlas/) · [Installer le vôtre](#-installer-votre-propre-atlas-du-ciel) · [Licence MIT](LICENSE)
 
@@ -19,6 +19,7 @@
 
 ### Dans le ciel
 - ✈️ **Tous les avions du monde** (7 000 à 12 000 selon l'heure), orientés selon leur vrai cap. Vus de loin, chacun rejoue en accéléré ses ~45 dernières minutes de vol réel ; de près, ils avancent à leur vraie vitesse.
+- 🚢 **Les navires** captés par les antennes AIS des côtes (cargos, pétroliers, ferries, pêche, plaisance…), avec leur fiche : pavillon, vitesse, destination.
 - 🛰️ **Plus de 30 000 objets spatiaux** : satellites actifs, Starlink, stations, étages de fusée et débris, avec leurs orbites.
 - ⏳ **Voyage dans le temps de 1900 à aujourd'hui** : le ciel vide, Spoutnik, la Lune, l'explosion de Starlink… avec les grandes dates sur une frise. Les nouveaux lancements s'ajoutent tout seuls.
 - 🔍 **Recherche** d'un vol (`AFR1234`), d'une compagnie (« air france ») ou d'un satellite (« ISS ») : un clic n'affiche plus que cet objet.
@@ -44,6 +45,7 @@
             ┌───────────────── GitHub Actions (gratuit) ───────────────┐
  OpenSky ──►│ « Atlas - avions »      toutes les 5 min                 │──► branche atlas-avions  ─┐
 CelesTrak ─►│ « Atlas - satellites »  toutes les 3 h                   │──► branche atlas-donnees ─┤
+aisstream ►│ « Atlas - bateaux »     toutes les 5 min                 │──► branche atlas-bateaux ─┤
  EUMETSAT,  │                                                          │                           │
  NASA, NOAA►│ « Atlas - météo »       toutes les heures                │──► branche atlas-meteo   ─┤
  Space Devs►│   (+ prochains lancements)                               │                           │
@@ -51,7 +53,7 @@ CelesTrak ─►│ « Atlas - satellites »  toutes les 3 h                   �
                                    votre navigateur  ◄──  site votre-pseudo.github.io/atlas (GitHub Pages)
 ```
 
-Un site GitHub Pages ne peut pas tout faire seul : OpenSky refuse les appels venant directement d'une page web, et les images météo doivent être assemblées en une carte du monde. Ce sont donc **trois tâches GitHub** qui vont chercher les données et les déposent sur trois branches du dépôt ; le site n'a plus qu'à les lire. Chaque branche ne garde qu'un seul commit, remplacé à chaque relevé : le dépôt ne grossit pas.
+Un site GitHub Pages ne peut pas tout faire seul : OpenSky refuse les appels venant directement d'une page web, et les images météo doivent être assemblées en une carte du monde. Ce sont donc **quatre tâches GitHub** qui vont chercher les données et les déposent sur quatre branches du dépôt ; le site n'a plus qu'à les lire. Chaque branche ne garde qu'un seul commit, remplacé à chaque relevé : le dépôt ne grossit pas.
 
 Le planificateur intégré de GitHub est **peu fiable** (il lui arrive de ne jamais lancer les tâches). Le service gratuit **cron-job.org** les déclenche donc à sa place, à heure fixe.
 
@@ -73,19 +75,20 @@ Sur cette page : bouton vert **Code** › **Download ZIP**, puis dézippez-le.
 
 ### Étape 3 — Mettre votre pseudo dans le site
 
-Ouvrez **`atlas/index.html`** avec le Bloc-notes. Cherchez les trois lignes qui contiennent **`damballah/damballah.github.io`** et remplacez **`damballah`** par **votre pseudo** (six fois en tout). Enregistrez.
+Ouvrez **`atlas/index.html`** avec le Bloc-notes. Cherchez les quatre lignes qui contiennent **`damballah/damballah.github.io`** et remplacez **`damballah`** par **votre pseudo** (huit fois en tout). Enregistrez.
 
 ```html
 window.ATLAS_DONNEES = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-donnees/';
 window.ATLAS_AVIONS  = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-avions/';
 window.ATLAS_METEO   = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-meteo/';
+window.ATLAS_BATEAUX = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-bateaux/';
 ```
 
 ### Étape 4 — Envoyer les fichiers
 
 1. Dans votre dépôt sur GitHub : **Add file** › **Upload files**. Glissez le dossier **`atlas`**, puis **Commit changes**.
 2. ⚠️ **Le dossier `.github` est souvent ignoré** quand on le glisse (son nom commence par un point). Créez-le à la main : **Add file** › **Create new file**, tapez comme nom `.github/workflows/test.yml`, écrivez une lettre dedans et **Commit**.
-3. Ouvrez le dossier **`.github/workflows`** ainsi créé › **Add file** › **Upload files**, et glissez-y **les trois fichiers** `atlas-avions.yml`, `atlas-meteo.yml` et `atlas-satellites.yml` (les fichiers eux-mêmes, pas le dossier). **Commit changes**.
+3. Ouvrez le dossier **`.github/workflows`** ainsi créé › **Add file** › **Upload files**, et glissez-y **les quatre fichiers** `atlas-avions.yml`, `atlas-bateaux.yml`, `atlas-meteo.yml` et `atlas-satellites.yml` (les fichiers eux-mêmes, pas le dossier). **Commit changes**.
 4. Supprimez le fichier `test.yml` (cliquez dessus › **⋯** › **Delete file** › **Commit**).
 
 > 💡 Vous ne voyez pas le dossier `.github` sur votre PC ? Dans l'explorateur Windows : **Affichage › Éléments masqués**.
@@ -106,12 +109,21 @@ Sans compte, OpenSky peut limiter les relevés d'avions.
 
 > 🔒 Les secrets ne sont jamais visibles, ni dans le site ni dans le dépôt.
 
-### Étape 7 — Lancer les trois tâches une première fois
+### Étape 6 bis — Ajouter une clé aisstream.io (pour les navires, gratuit)
+
+1. Créez un compte sur [aisstream.io](https://aisstream.io) (bouton **Sign in**, connexion avec GitHub possible).
+2. Menu **API Keys** › **Create New API Key**, puis copiez la clé.
+3. Dans votre dépôt : **Settings** › **Secrets and variables** › **Actions** › **New repository secret** : nom **`AISSTREAM_API_KEY`**, valeur : votre clé.
+
+> Sans cette clé, tout fonctionne sauf les navires.
+
+### Étape 7 — Lancer les quatre tâches une première fois
 
 Onglet **Actions** de votre dépôt, puis pour chacune : cliquez son nom à gauche › **Run workflow** › **Run workflow**, et attendez la ✅.
 1. **Atlas - satellites** (1 à 3 minutes)
 2. **Atlas - avions** (moins d'une minute)
 3. **Atlas - météo** (1 à 5 minutes)
+4. **Atlas - bateaux** (environ 1 minute)
 
 Votre site fonctionne déjà : ouvrez **`https://votre-pseudo.github.io/atlas/`**. Il reste à le faire vivre tout seul.
 
@@ -145,13 +157,14 @@ Ce jeton permettra à cron-job.org de lancer vos tâches, **et rien d'autre**.
      | `Authorization` | `Bearer ` suivi de votre jeton (un espace entre les deux) |
      | `X-GitHub-Api-Version` | `2022-11-28` |
 4. **Test de fonctionnement** : la réponse doit être **204** (voir le tableau des problèmes sinon), puis **Sauvegarder**.
-5. **Clonez** cette tâche deux fois (menu **⋮** › Cloner) en changeant seulement le titre, le nom du fichier dans l'URL et le planning :
+5. **Clonez** cette tâche trois fois (menu **⋮** › Cloner) en changeant seulement le titre, le nom du fichier dans l'URL et le planning :
    - `Atlas météo` · `atlas-meteo.yml` · toutes les **heures**
    - `Atlas satellites` · `atlas-satellites.yml` · toutes les **3 heures**
+   - `Atlas bateaux` · `atlas-bateaux.yml` · toutes les **5 minutes**
 
 ### Étape 10 — Profiter 🎉
 
-C'est fini : les avions se mettent à jour toutes les 5 minutes, la météo toutes les heures et les satellites toutes les 3 heures. L'historique météo se remplit tout seul (72 heures au bout de 3 jours). Le bouton **⚙** du site indique la date des derniers relevés.
+C'est fini : les avions et les navires se mettent à jour toutes les 5 minutes, la météo toutes les heures et les satellites toutes les 3 heures. L'historique météo se remplit tout seul (72 heures au bout de 3 jours). Le bouton **⚙** du site indique la date des derniers relevés.
 
 > 📅 **Dans un an**, quand le jeton expire : sur GitHub, ouvrez le jeton `cron atlas` › **Regenerate token**, puis remplacez la valeur `Authorization` dans les trois tâches cron-job.org.
 
@@ -172,6 +185,8 @@ C'est fini : les avions se mettent à jour toutes les 5 minutes, la météo tout
 | Pas de nuages, message « Météo pas encore publiée » | Lancez **Atlas - météo** et vérifiez la ligne `ATLAS_METEO` de l'étape 3. |
 | Croix rouge sur **Atlas - météo** | Un service météo était en panne pendant ce relevé : le suivant, une heure plus tard, réessaie. Les relevés déjà publiés restent en ligne. |
 | Message « CelesTrak en pause » | Normal : après un refus de CelesTrak, le site le laisse tranquille 24 h et utilise ses sources de secours. |
+| Pas de navires, compteur « navires : en attente » | Vérifiez le secret **`AISSTREAM_API_KEY`** (étape 6 bis), lancez **Atlas - bateaux** et lisez son journal dans Actions. |
+| Très peu de navires en plein océan | Normal : l'AIS gratuit est capté par des antennes au sol, près des côtes. |
 | Le site rame sur un vieux PC | Décochez **Vents animés**, et dans **⚙** mettez l'imagerie détaillée sur **Désactivée**. |
 
 ---
@@ -188,6 +203,7 @@ C'est fini : les avions se mettent à jour toutes les 5 minutes, la météo tout
 | Météo et climat d'un lieu | clic sur la Terre, là où il n'y a pas d'objet |
 | Nuages, pluie, vents, animations | rubrique **Météo** du panneau de gauche |
 | Prochains lancements | onglet **🚀** du panneau de droite |
+| Navires | compteur « navires » en haut, calque **Navires** à gauche, ou recherche par nom ou numéro MMSI |
 | Suivre l'objet sélectionné | `F` |
 | Pause / lecture du temps | `Espace` |
 | Revenir au temps réel | `L` |
@@ -206,11 +222,13 @@ atlas/
 ├── style.css             l'apparence
 └── outils/               scripts utilisés par les tâches GitHub
     ├── avions.py         relevé mondial des avions
+    ├── bateaux.py        relevé des navires (AIS)
     ├── donnees.py        catalogue et orbites des satellites
     ├── meteo.py          cartes des nuages, de la pluie et des vents
     └── lancements.py     prochains lancements de fusées
 .github/workflows/
 ├── atlas-avions.yml      tâche : avions
+├── atlas-bateaux.yml     tâche : navires
 ├── atlas-meteo.yml       tâche : météo et lancements
 └── atlas-satellites.yml  tâche : satellites
 ```
@@ -224,11 +242,13 @@ Aucune installation ni compilation : le site est en HTML, CSS et JavaScript, ave
 - **CelesTrak** : un seul téléchargement par relevé, et une **pause de 24 h après tout refus**. Les visiteurs ne contactent jamais CelesTrak. Secours automatiques : **GCAT** et **SatNOGS**.
 - **OpenSky** : un relevé mondial toutes les 5 minutes, soit environ 1 150 crédits par jour sur les 4 000 d'un compte gratuit.
 - **Météo et lancements** : téléchargés par GitHub, pas par les visiteurs (2 appels par heure pour The Space Devs, qui en autorise 15). Seule la météo au clic interroge Open-Meteo depuis le navigateur, une fois par lieu cliqué.
+- **aisstream.io** : la clé reste dans les secrets GitHub ; les visiteurs ne lisent que le fichier publié, comme le demande le service.
 - **LiveATC** : leurs flux audio ne sont pas intégrés au site, conformément à leurs conditions ; le site ouvre leur propre page.
 
 ## 📚 Sources et crédits
 
 - Avions : [OpenSky Network](https://opensky-network.org), données ADS-B de récepteurs bénévoles. Fiches de vol : [adsbdb](https://www.adsbdb.com).
+- Navires : AIS via [aisstream.io](https://aisstream.io) (service gratuit, en bêta). Fiches détaillées : liens vers MarineTraffic et VesselFinder.
 - Satellites : [CelesTrak](https://celestrak.org). Secours : data from GCAT (J. McDowell, [planet4589.org/space/gcat](https://planet4589.org/space/gcat)), licence CC BY, et [SatNOGS DB](https://db.satnogs.org), licence CC BY-SA 4.0.
 - Nuages : © EUMETSAT ([EUMETView](https://view.eumetsat.int)) et NASA GIBS (GOES, Himawari). *We acknowledge the use of imagery provided by services from NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS).*
 - Pluie : NASA GPM IMERG via NASA GIBS (observations publiées avec environ 5 h de décalage). Vents : modèle [NOAA GFS](https://www.nco.ncep.noaa.gov/pmb/products/gfs/) (vent à 10 m, grille de 1°).
@@ -254,7 +274,7 @@ Aucune installation ni compilation : le site est en HTML, CSS et JavaScript, ave
 
 Le **code** d'Atlas du Ciel est distribué sous **licence MIT** : vous pouvez l'utiliser, le copier, le modifier et le redistribuer librement, y compris dans un projet commercial, à condition de conserver la mention de copyright et le texte de la licence. Voir le fichier [LICENSE](LICENSE).
 
-Les **données** affichées (avions, satellites, météo, images, adresses) ne sont pas couvertes par cette licence : elles restent soumises aux conditions de leurs fournisseurs, listés ci-dessus. Certaines, comme l'imagerie Sentinel-2 d'EOX, n'autorisent qu'un usage non commercial.
+Les **données** affichées (avions, navires, satellites, météo, images, adresses) ne sont pas couvertes par cette licence : elles restent soumises aux conditions de leurs fournisseurs, listés ci-dessus. Certaines, comme l'imagerie Sentinel-2 d'EOX, n'autorisent qu'un usage non commercial.
 
 <div align="center">
 
