@@ -7,13 +7,16 @@
 [**▶ Voir le site en ligne**](https://damballah.github.io/atlas/) · [Installer le vôtre](#-installer-votre-propre-atlas-du-ciel) · [Licence MIT](LICENSE)
 
 <!-- IMAGE PRINCIPALE : déposez une capture du globe dans docs/images/apercu.png (1600×900 conseillé) -->
+
+![Mises à jour récentes](docs/images/update27112026.png).
+
 ![Aperçu d'Atlas du Ciel](docs/images/apercu.png)
+
+
 
 *Idée et conception : **[Damballah](https://github.com/damballah)** · Programmation et documentation : **Claude** (Anthropic)*
 
 </div>
-
----
 
 ## ✨ Ce que ça fait
 
@@ -33,6 +36,7 @@
 - 🚀 **Prochains lancements de fusées** : compte à rebours, pas de tir sur le globe, et retransmission en direct dans le site.
 - 🎧 **Écouter** : la tour de contrôle de l'aéroport d'un avion (LiveATC.net), le direct de la NASA depuis l'ISS.
 - 🔎 **Zoom net jusqu'aux villes** : en s'approchant, le globe se couvre d'images satellites de plus en plus détaillées (Sentinel-2 à 10 m, ou Esri jusqu'à 1 m).
+- 🗺️ **Noms sur la carte** : villes, villages et frontières en s'approchant, fleuves, rivières, canaux, lacs, sommets et massifs, chacun activable dans le volet de gauche.
 - 🆓 **100 % gratuit et 100 % GitHub** : aucun serveur à louer, aucun ordinateur à laisser allumé.
 
 ---
@@ -49,11 +53,13 @@ aisstream ►│ « Atlas - bateaux »     toutes les 5 min                 │�
  EUMETSAT,  │                                                          │                           │
  NASA, NOAA►│ « Atlas - météo »       toutes les heures                │──► branche atlas-meteo   ─┤
  Space Devs►│   (+ prochains lancements)                               │                           │
+ Natural   ►│ « Atlas - noms »        une seule fois, à la main        │──► branche atlas-noms    ─┤
+ Earth      │                                                          │                           │
             └──────────────────────────────────────────────────────────┘                           ▼
                                    votre navigateur  ◄──  site votre-pseudo.github.io/atlas (GitHub Pages)
 ```
 
-Un site GitHub Pages ne peut pas tout faire seul : OpenSky refuse les appels venant directement d'une page web, et les images météo doivent être assemblées en une carte du monde. Ce sont donc **quatre tâches GitHub** qui vont chercher les données et les déposent sur quatre branches du dépôt ; le site n'a plus qu'à les lire. Chaque branche ne garde qu'un seul commit, remplacé à chaque relevé : le dépôt ne grossit pas.
+Un site GitHub Pages ne peut pas tout faire seul : OpenSky refuse les appels venant directement d'une page web, et les images météo doivent être assemblées en une carte du monde. Ce sont donc **cinq tâches GitHub** qui vont chercher les données et les déposent sur cinq branches du dépôt ; le site n'a plus qu'à les lire. Chaque branche ne garde qu'un seul commit, remplacé à chaque relevé : le dépôt ne grossit pas.
 
 Le planificateur intégré de GitHub est **peu fiable** (il lui arrive de ne jamais lancer les tâches). Le service gratuit **cron-job.org** les déclenche donc à sa place, à heure fixe.
 
@@ -75,20 +81,21 @@ Sur cette page : bouton vert **Code** › **Download ZIP**, puis dézippez-le.
 
 ### Étape 3 — Mettre votre pseudo dans le site
 
-Ouvrez **`atlas/index.html`** avec le Bloc-notes. Cherchez les quatre lignes qui contiennent **`damballah/damballah.github.io`** et remplacez **`damballah`** par **votre pseudo** (huit fois en tout). Enregistrez.
+Ouvrez **`atlas/index.html`** avec le Bloc-notes. Cherchez les cinq lignes qui contiennent **`damballah/damballah.github.io`** et remplacez **`damballah`** par **votre pseudo** (dix fois en tout). Enregistrez.
 
 ```html
 window.ATLAS_DONNEES = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-donnees/';
 window.ATLAS_AVIONS  = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-avions/';
 window.ATLAS_METEO   = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-meteo/';
 window.ATLAS_BATEAUX = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-bateaux/';
+window.ATLAS_NOMS    = 'https://raw.githubusercontent.com/VOTRE-PSEUDO/VOTRE-PSEUDO.github.io/atlas-noms/';
 ```
 
 ### Étape 4 — Envoyer les fichiers
 
 1. Dans votre dépôt sur GitHub : **Add file** › **Upload files**. Glissez le dossier **`atlas`**, puis **Commit changes**.
 2. ⚠️ **Le dossier `.github` est souvent ignoré** quand on le glisse (son nom commence par un point). Créez-le à la main : **Add file** › **Create new file**, tapez comme nom `.github/workflows/test.yml`, écrivez une lettre dedans et **Commit**.
-3. Ouvrez le dossier **`.github/workflows`** ainsi créé › **Add file** › **Upload files**, et glissez-y **les quatre fichiers** `atlas-avions.yml`, `atlas-bateaux.yml`, `atlas-meteo.yml` et `atlas-satellites.yml` (les fichiers eux-mêmes, pas le dossier). **Commit changes**.
+3. Ouvrez le dossier **`.github/workflows`** ainsi créé › **Add file** › **Upload files**, et glissez-y **les cinq fichiers** `atlas-avions.yml`, `atlas-bateaux.yml`, `atlas-meteo.yml`, `atlas-noms.yml` et `atlas-satellites.yml` (les fichiers eux-mêmes, pas le dossier). **Commit changes**.
 4. Supprimez le fichier `test.yml` (cliquez dessus › **⋯** › **Delete file** › **Commit**).
 
 > 💡 Vous ne voyez pas le dossier `.github` sur votre PC ? Dans l'explorateur Windows : **Affichage › Éléments masqués**.
@@ -117,13 +124,14 @@ Sans compte, OpenSky peut limiter les relevés d'avions.
 
 > Sans cette clé, tout fonctionne sauf les navires.
 
-### Étape 7 — Lancer les quatre tâches une première fois
+### Étape 7 — Lancer les cinq tâches une première fois
 
 Onglet **Actions** de votre dépôt, puis pour chacune : cliquez son nom à gauche › **Run workflow** › **Run workflow**, et attendez la ✅.
 1. **Atlas - satellites** (1 à 3 minutes)
 2. **Atlas - avions** (moins d'une minute)
 3. **Atlas - météo** (1 à 5 minutes)
 4. **Atlas - bateaux** (environ 1 minute)
+5. **Atlas - noms** (1 à 2 minutes) — une seule fois suffit : les fleuves et les montagnes ne bougent pas, inutile de la programmer sur cron-job.org.
 
 Votre site fonctionne déjà : ouvrez **`https://votre-pseudo.github.io/atlas/`**. Il reste à le faire vivre tout seul.
 
@@ -225,11 +233,13 @@ atlas/
     ├── bateaux.py        relevé des navires (AIS)
     ├── donnees.py        catalogue et orbites des satellites
     ├── meteo.py          cartes des nuages, de la pluie et des vents
+    ├── noms.py           noms des fleuves, lacs, sommets et massifs
     └── lancements.py     prochains lancements de fusées
 .github/workflows/
 ├── atlas-avions.yml      tâche : avions
 ├── atlas-bateaux.yml     tâche : navires
 ├── atlas-meteo.yml       tâche : météo et lancements
+├── atlas-noms.yml        tâche : noms des fleuves et montagnes (une fois)
 └── atlas-satellites.yml  tâche : satellites
 ```
 
@@ -255,6 +265,7 @@ Aucune installation ni compilation : le site est en HTML, CSS et JavaScript, ave
 - Météo au clic et historique des températures : [Open-Meteo.com](https://open-meteo.com), licence CC BY 4.0 ; archives : réanalyse ERA5 de Copernicus / ECMWF (depuis 1940).
 - Imagerie détaillée : Sentinel-2 cloudless 2024 – [s2maps.eu](https://s2maps.eu) by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024), licence CC BY-NC-SA 4.0 (usage non commercial). Option : Esri World Imagery (© Esri, Maxar, Earthstar Geographics et la communauté des utilisateurs SIG).
 - Lancements : [The Space Devs – Launch Library 2](https://thespacedevs.com/llapi). Retransmissions : chaînes officielles des opérateurs. Direct de l'ISS : NASA. Radio des avions : liens vers [LiveATC.net](https://www.liveatc.net).
+- Noms des villes, villages et frontières : [OpenFreeMap](https://openfreemap.org) © [OpenMapTiles](https://openmaptiles.org), données © [contributeurs OpenStreetMap](https://www.openstreetmap.org/copyright). Fleuves, rivières, canaux, lacs, sommets et massifs : [Natural Earth](https://www.naturalearthdata.com) (domaine public).
 - Adresses : [OpenStreetMap / Nominatim](https://nominatim.org) et la Géoplateforme de l'IGN.
 - Moteur 3D : [three.js](https://threejs.org) (MIT). Textures de la Terre : NASA Blue Marble, via [three-globe](https://github.com/vasturiano/three-globe) (MIT).
 - **Avions d'avant aujourd'hui** : une **simulation** fondée sur des ordres de grandeur historiques, car aucune archive mondiale de tous les vols n'existe. C'est indiqué clairement dans le site.
